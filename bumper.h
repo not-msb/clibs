@@ -7,38 +7,38 @@
 #define CHUNK 8096
 #endif
 
-typedef struct Bbuf {
+typedef struct Bumper {
     void *data;
     size_t length;
     size_t capacity;
-} Bbuf;
+} Bumper;
 
-Bbuf binit() {
-    return (Bbuf){ .data = malloc(CHUNK), .length = 0, .capacity = CHUNK, };
+Bumper binit() {
+    return (Bumper){ .data = malloc(CHUNK), .length = 0, .capacity = CHUNK, };
 }
 
-void brealloc(Bbuf *bbuf, size_t size) {
-    size_t length = bbuf->length + size;
-    if (length <= bbuf->capacity) return;
+void brealloc(Bumper *bumper, size_t size) {
+    size_t length = bumper->length + size;
+    if (length <= bumper->capacity) return;
 
-    while (length > bbuf->capacity) {
-        bbuf->capacity += CHUNK;
+    while (length > bumper->capacity) {
+        bumper->capacity += CHUNK;
     }
-    bbuf->data = realloc(bbuf->data, bbuf->capacity);
+    bumper->data = realloc(bumper->data, bumper->capacity);
 }
 
-void *balloc(Bbuf *bbuf, size_t size) {
-    brealloc(bbuf, size);
+void *balloc(Bumper *bumper, size_t size) {
+    brealloc(bumper, size);
 
-    void *ptr = bbuf->data + bbuf->length;
-    bbuf->length += size;
+    void *ptr = bumper->data + bumper->length;
+    bumper->length += size;
     return ptr;
 }
 
-void bfree(Bbuf *bbuf) {
-    free(bbuf->data);
-    bbuf->data = NULL;
-    bbuf->length = 0;
+void bfree(Bumper *bumper) {
+    free(bumper->data);
+    bumper->data = NULL;
+    bumper->length = 0;
 }
 
 #endif
