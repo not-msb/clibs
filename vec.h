@@ -33,9 +33,10 @@
         VEC.ptr[VEC.length] = ELEM; \
         break; \
     } \
-    typeof(*VEC.ptr) *ptr = balloc(VEC.bumper, VEC.length); \
-    memmove(ptr, VEC.ptr, VEC.length-1); \
-    ptr[VEC.length-1] = ELEM; \
+    size_t length = VEC.length*sizeof(ELEM); \
+    typeof(*VEC.ptr) *ptr = balloc(VEC.bumper, length); \
+    memmove(ptr, VEC.ptr, length-sizeof(ELEM)); \
+    ptr[length-sizeof(ELEM)] = ELEM; \
     VEC.ptr = ptr; \
     VEC.capacity++; \
 } while(0)
