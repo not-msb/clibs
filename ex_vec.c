@@ -10,17 +10,17 @@ int main() {
     printf("Length before: %zu\n", v.length);
     printf("%s\n", v.ptr);
 
-    VEC_PUSH(char, v, 'h');
-    VEC_PUSH(char, v, 'e');
-    VEC_PUSH(char, v, 'l');
-    VEC_PUSH(char, v, 'l');
-    VEC_PUSH(char, v, 'o');
-    VEC_PUSH(char, v, '\0');
+    VEC_PUSH(v, 'h');
+    VEC_PUSH(v, 'e');
+    VEC_PUSH(v, 'l');
+    VEC_PUSH(v, 'l');
+    VEC_PUSH(v, 'o');
+    VEC_PUSH(v, '\0');
     printf("Length after:  %zu\n", v.length);
     printf("%s\n", v.ptr);
 
     for (size_t i = v.length; i>0; i--) {
-        char c = VEC_POP(char, v);
+        char c = VEC_POP(v);
         printf("popped: \'%c\'\n", c);
     }
 
