@@ -27,8 +27,9 @@
 
 #define VEC_NEW(TYPE, BUMPER) (Vec_##TYPE){ .bumper = BUMPER, .ptr = NULL, .length = 0, .capacity = 0 }
 
+//if (!strcmp(typename(VEC.ptr), typename(ELEM))) break;
 #define VEC_PUSH(VEC, ELEM) do { \
-    if (!strcmp(typename(VEC.ptr), typename(ELEM))) break; \
+    if (!__builtin_types_compatible_p(typeof(*VEC.ptr), typeof(ELEM))) break; \
     if (++VEC.length <= VEC.capacity) { \
         VEC.ptr[VEC.length] = ELEM; \
         break; \
@@ -36,7 +37,7 @@
     size_t length = VEC.length*sizeof(ELEM); \
     typeof(*VEC.ptr) *ptr = balloc(VEC.bumper, length); \
     memmove(ptr, VEC.ptr, length-sizeof(ELEM)); \
-    ptr[length-sizeof(ELEM)] = ELEM; \
+    ptr[VEC.length-1] = ELEM; \
     VEC.ptr = ptr; \
     VEC.capacity++; \
 } while(0)
