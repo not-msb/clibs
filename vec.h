@@ -5,19 +5,6 @@
 #include <string.h>
 #include "bumper.h"
 
-// Got this from https://stackoverflow.com/questions/9804371/syntax-and-sample-usage-of-generic-in-c11/17290414#17290414
-#define typename(x) _Generic((x),                                                 \
-            _Bool: "_Bool",                  unsigned char: "unsigned char",          \
-             char: "char",                     signed char: "signed char",            \
-        short int: "short int",         unsigned short int: "unsigned short int",     \
-              int: "int",                     unsigned int: "unsigned int",           \
-         long int: "long int",           unsigned long int: "unsigned long int",      \
-    long long int: "long long int", unsigned long long int: "unsigned long long int", \
-            float: "float",                         double: "double",                 \
-      long double: "long double",                   char *: "pointer to char",        \
-           void *: "pointer to void",                int *: "pointer to int",         \
-          default: "other")
-
 #define VEC_DEFINE(TYPE) typedef struct Vec_##TYPE { \
     Bumper *bumper; \
     TYPE *ptr; \
@@ -27,7 +14,6 @@
 
 #define VEC_NEW(TYPE, BUMPER) (Vec_##TYPE){ .bumper = BUMPER, .ptr = NULL, .length = 0, .capacity = 0 }
 
-//if (!strcmp(typename(VEC.ptr), typename(ELEM))) break;
 #define VEC_PUSH(VEC, ELEM) do { \
     if (!__builtin_types_compatible_p(typeof(*VEC.ptr), typeof(ELEM))) break; \
     if (++VEC.length <= VEC.capacity) { \
